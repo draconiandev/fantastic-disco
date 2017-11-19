@@ -4,19 +4,28 @@
 <head>
   <title>RivalCorp</title>
   <%= csrf_meta_tags %>
+  <% if Rails.env.production? %>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://fonts.gstatic.com https://fonts.googleapis.com ws://sharescription.herokuapp.com/cable">
+  <% else %>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://fonts.gstatic.com https://fonts.googleapis.com ws://localhost:3000/cable ws://127.0.0.1:3000/cable">
+  <% end %>
 
-    <%= stylesheet_link_tag    'application', media: 'all' %>
-      <%= javascript_include_tag 'application' %>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
-  <p class="notice">
-    <%= notice %>
-  </p>
-  <p class="alert">
-    <%= alert %>
-  </p>
-  <%= yield %>
+  <div class="container">
+    <p class="hide">
+      <% flash.each do |key, message| %>
+        <%= message %>
+      <% end %>
+    </p>
+
+    <%= yield %>
+
+    <%#= render 'shared/flash_messages' %>
 </body>
 
 </html>
