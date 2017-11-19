@@ -31,6 +31,7 @@ describe User, type: :model do
   context 'with ActiveRecord Associations' do
     it { expect(user).to have_one(:current_address).dependent(:destroy) }
     it { expect(user).to have_one(:permanent_address).dependent(:destroy) }
+    it { expect(user).to have_one(:user_document).dependent(:destroy) }
   end
 
   context 'with ActiveModel validations' do
