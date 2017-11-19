@@ -20,10 +20,13 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name, format: { with: /\A[a-zA-Z. ]*\z/, message: 'please use only English Alphabets' }
 
+  attr_accessor :login
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :confirmable, :lockable,
-    :recoverable, :rememberable, :trackable, :validatable, :timeoutable
+    :recoverable, :rememberable, :trackable, :validatable, :timeoutable,
+    authentication_keys: [:login]
 
   # Before creating the account for the user, generate an account number
   before_create :generate_account_number

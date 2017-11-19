@@ -41,6 +41,9 @@ gem 'enumerize'
 gem 'carrierwave', '~> 1.0'
 gem 'mini_magick'
 
+# Form Builder
+gem 'simple_form'
+
 group :development, :test do
   gem 'bullet'
   gem 'bundler-audit'
