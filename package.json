@@ -1,5 +1,7 @@
 {
   "name": "rivalcorp",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "materialize-css": "^0.100.2"
+  }
 }
