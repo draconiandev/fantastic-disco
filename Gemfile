@@ -37,6 +37,9 @@ gem 'devise'
 # Enumerization
 gem 'enumerize'
 
+# Image Upload
+gem 'carrierwave', '~> 1.0'
+
 group :development, :test do
   gem 'bullet'
   gem 'bundler-audit'
