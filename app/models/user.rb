@@ -28,6 +28,22 @@ class User < ApplicationRecord
   # Before creating the account for the user, generate an account number
   before_create :generate_account_number
 
+  # Enables the authentication system to login a user using either account number or username
+  # The key should be login instead of username or account_number in the params hash
+  # Upon duplicating the hash and deleting the key, returns the value entered by the client
+  # Dowcased value is then compared against account number or a username
+  # If login key is not present, method checks if account_number or username keys, then finds by
+  # those conditions
+  # Taken from: https://github.com/plataformatec/devise/wiki/How-To:-Allow-users-to-sign-in-using-their-username-or-email-address
+  def self.find_for_database_authentication(warden_conditions)
+    conditions = warden_conditions.dup
+    if (login = conditions.delete(:login))
+      find_by(['lower(account_number) = :value OR lower(username) = :value', { value: login.downcase }])
+    elsif conditions.key?(:account_number) || conditions.key?(:username)
+      find_by(conditions.to_hash)
+    end
+  end
+
   private
 
   # Returns if account number is already present, else continues to generate a token
