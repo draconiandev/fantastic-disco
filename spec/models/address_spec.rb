@@ -34,4 +34,25 @@ describe Address, type: :model do
   context 'with Enumerize' do
     it { expect(address).to enumerize(:state).in(YAML.load_file(Rails.root.join('config', 'states.yml'))) }
   end
+
+  context 'with private instance methods' do
+    context 'when creating an address' do
+      it 'validates pincode' do
+        address = build :address, pincode: '570017'
+        address.valid?
+        expect(address.errors.messages[:pincode]).not_to include('not a valid pincode')
+      end
+
+      it 'raises invalid when an invalid pincode is passed' do
+        address = build :address, pincode: '8758570017'
+        expect(address).not_to be_valid
+      end
+
+      it 'raises invalid message when an invalid pincode is passed' do
+        address = build :address, pincode: '8758570017'
+        address.valid?
+        expect(address.errors.messages[:pincode]).to include('not a valid pincode')
+      end
+    end
+  end
 end

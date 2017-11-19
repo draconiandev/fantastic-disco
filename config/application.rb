@@ -29,5 +29,6 @@ module RivalCorp
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+    config.read_encrypted_secrets = true
   end
 end
