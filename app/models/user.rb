@@ -22,6 +22,7 @@ class User < ApplicationRecord
   validates :first_name, :last_name, format: { with: /\A[a-zA-Z. ]*\z/, message: 'please use only English Alphabets' }
 
   attr_accessor :login
+  attr_reader :otp
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -46,6 +47,10 @@ class User < ApplicationRecord
     elsif conditions.key?(:account_number) || conditions.key?(:username)
       find_by(conditions.to_hash)
     end
+  end
+
+  def docs_uploaded?
+    self.user_document.present?
   end
 
   private

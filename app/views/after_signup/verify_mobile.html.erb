@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col s12 m10 l4 offset-m1 offset-l4">
+    <h4 class="teal-text center">Verify Mobile Number</h4>
+
+    <%= simple_form_for(current_user, url: wizard_path, html: { method: :put }) do |f| %>
+    <div class="form-inputs">
+      <div class="row">
+        <div class="col s12">
+          <%= f.input :otp, required: false, autofocus: true, placeholder: 'Please enter the OTP that was sent to your mobile number' %>
+        </div>
+      </div>
+        <small>Since I don't have a SMS provider, please see your console to get the OTP</small>
+    </div>
+    
+    <br>
+
+    <div class="form-actions">
+      <%= f.button :submit, "Verify" %>
+    </div>
+    <% end %>
+  </div>
+</div>

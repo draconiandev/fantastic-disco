@@ -44,6 +44,9 @@ gem 'mini_magick'
 # Form Builder
 gem 'simple_form'
 
+# Wizard Controller
+gem 'wicked'
+
 group :development, :test do
   gem 'bullet'
   gem 'bundler-audit'
