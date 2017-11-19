@@ -28,6 +28,11 @@ describe User, type: :model do
     it { expect(user).to have_db_index(:username).unique }
   end
 
+  context 'with ActiveRecord Associations' do
+    it { expect(user).to have_one(:current_address).dependent(:destroy) }
+    it { expect(user).to have_one(:permanent_address).dependent(:destroy) }
+  end
+
   context 'with ActiveModel validations' do
     # Presence Validations
     it { expect(user).to validate_presence_of(:first_name) }

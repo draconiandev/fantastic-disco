@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  has_one :permanent_address, class_name: 'Address', dependent: :destroy
+  has_one :current_address, class_name: 'Address', dependent: :destroy
+
   validates :first_name, :last_name, :email, :username, :mobile_number, presence: true
   validates :email, :mobile_number, :username, :account_number, uniqueness: { case_sensitive: false }
   validates :mobile_number, length: { is: 10 },
