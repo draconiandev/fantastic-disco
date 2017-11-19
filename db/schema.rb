@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171119125342) do
+ActiveRecord::Schema.define(version: 20171119144557) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,22 @@ ActiveRecord::Schema.define(version: 20171119125342) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
+
+  create_table "user_documents", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "passport_number"
+    t.string "passport"
+    t.string "pan_number", default: "", null: false
+    t.string "pan", default: "", null: false
+    t.string "aadhar_number", default: "", null: false
+    t.string "aadhar", default: "", null: false
+    t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["aadhar_number"], name: "index_user_documents_on_aadhar_number", unique: true
+    t.index ["pan_number"], name: "index_user_documents_on_pan_number", unique: true
+    t.index ["passport_number"], name: "index_user_documents_on_passport_number", unique: true
+    t.index ["user_id"], name: "index_user_documents_on_user_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -65,4 +81,5 @@ ActiveRecord::Schema.define(version: 20171119125342) do
   end
 
   add_foreign_key "addresses", "users"
+  add_foreign_key "user_documents", "users"
 end
