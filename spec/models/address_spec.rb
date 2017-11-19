@@ -30,4 +30,8 @@ describe Address, type: :model do
     it { expect(address).to validate_presence_of(:country) }
     it { expect(address).to validate_presence_of(:pincode) }
   end
+
+  context 'with Enumerize' do
+    it { expect(address).to enumerize(:state).in(YAML.load_file(Rails.root.join('config', 'states.yml'))) }
+  end
 end

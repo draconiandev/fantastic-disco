@@ -34,6 +34,9 @@ gem 'jbuilder', '~> 2.5'
 # Authentication
 gem 'devise'
 
+# Enumerization
+gem 'enumerize'
+
 group :development, :test do
   gem 'bullet'
   gem 'bundler-audit'
