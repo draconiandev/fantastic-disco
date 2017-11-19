@@ -37,8 +37,9 @@ gem 'devise'
 # Enumerization
 gem 'enumerize'
 
-# Image Upload
+# Image Upload and manipulation
 gem 'carrierwave', '~> 1.0'
+gem 'mini_magick'
 
 group :development, :test do
   gem 'bullet'

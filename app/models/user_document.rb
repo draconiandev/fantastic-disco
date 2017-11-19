@@ -24,6 +24,10 @@ class UserDocument < ApplicationRecord
   # Upcase the attributes to normalize the values across the table
   before_create :upcase_attrs
 
+  mount_uploader :pan, DocumentUploader
+  mount_uploader :aadhar, DocumentUploader
+  mount_uploader :passport, DocumentUploader
+
   private
 
   def upcase_attrs
