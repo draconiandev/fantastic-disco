@@ -10,11 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171119110602) do
+ActiveRecord::Schema.define(version: 20171119125342) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pgcrypto"
+
+  create_table "addresses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "address_line_1", default: "", null: false
+    t.text "address_line_2"
+    t.string "city", default: "", null: false
+    t.string "state", default: "", null: false
+    t.string "pincode", default: "", null: false
+    t.string "country", default: "", null: false
+    t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -51,4 +64,5 @@ ActiveRecord::Schema.define(version: 20171119110602) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "addresses", "users"
 end
