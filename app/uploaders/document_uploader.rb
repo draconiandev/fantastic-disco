@@ -6,7 +6,7 @@ class DocumentUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
 
   process :validate_dimensions
-  process quaility: 85
+  process quality: 85
 
   # Choose what kind of storage to use for this uploader:
   storage :file
