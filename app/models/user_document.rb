@@ -20,4 +20,14 @@ class UserDocument < ApplicationRecord
                             format: { with: AADHAR_FORMAT, message: 'must contain only digits' }
   validates :passport_number, length: { is: 8 },
                               format: { with: PASSPORT_FORMAT, message: 'not a valid format' }
+
+  # Upcase the attributes to normalize the values across the table
+  before_create :upcase_attrs
+
+  private
+
+  def upcase_attrs
+    self.pan_number = pan_number.upcase
+    self.passport_number = passport_number.upcase
+  end
 end

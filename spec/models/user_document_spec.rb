@@ -54,4 +54,32 @@ describe UserDocument, type: :model do
     it { expect(user_document).not_to allow_value('5994 9032 3984').for(:aadhar_number) }
     it { expect(user_document).not_to allow_value('5994asdf3984').for(:aadhar_number) }
   end
+
+  context 'with callbacks' do
+    it { expect(user_document).to callback(:upcase_attrs).before(:create) }
+  end
+
+  context 'with private instance methods' do
+    context 'when creating a document' do
+      it 'upcases the passport number if lowercase chars are given' do
+        user_document = create :user_document, passport_number: 'p1352371'
+        expect(user_document.passport_number).to eq('P1352371')
+      end
+
+      it 'upcases the pan number if lowercase chars are given' do
+        user_document = create :user_document, pan_number: 'nvfjg8286p'
+        expect(user_document.pan_number).to eq('NVFJG8286P')
+      end
+
+      it 'if uppercase chars are given to the passport number, it retains the same' do
+        user_document = create :user_document, passport_number: 'P1352371'
+        expect(user_document.passport_number).to eq('P1352371')
+      end
+
+      it 'if uppercase chars are given to the pan number, it retains the same' do
+        user_document = create :user_document, pan_number: 'NVFJG8286P'
+        expect(user_document.pan_number).to eq('NVFJG8286P')
+      end
+    end
+  end
 end
