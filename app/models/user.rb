@@ -5,7 +5,7 @@ class User < ApplicationRecord
   has_one :current_address, class_name: 'Address', dependent: :destroy
   has_one :user_document, dependent: :destroy
 
-  validates :first_name, :last_name, :email, :username, :mobile_number, presence: true
+  validates :first_name, :last_name, :email, :mobile_number, presence: true
   validates :email, :mobile_number, :username, :account_number, uniqueness: { case_sensitive: false }
   validates :mobile_number, length: { is: 10 },
                             format: { with: /[789]\d{9}/i, message: 'should start with 7, 8, or 9' }

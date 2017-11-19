@@ -12,7 +12,7 @@ describe User, type: :model do
   end
 
   context 'with ActiveRecord databases' do
-    it { expect(user).to have_db_column(:username).of_type(:string).with_options(null: false, default: '') }
+    it { expect(user).to have_db_column(:username).of_type(:string) }
     it { expect(user).to have_db_column(:email).of_type(:string).with_options(null: false, default: '') }
     it { expect(user).to have_db_column(:first_name).of_type(:string).with_options(null: false, default: '') }
     it { expect(user).to have_db_column(:last_name).of_type(:string).with_options(null: false, default: '') }
@@ -39,7 +39,6 @@ describe User, type: :model do
     it { expect(user).to validate_presence_of(:first_name) }
     it { expect(user).to validate_presence_of(:last_name) }
     it { expect(user).to validate_presence_of(:email) }
-    it { expect(user).to validate_presence_of(:username) }
     it { expect(user).to validate_presence_of(:mobile_number) }
     # Uniqueness Validations
     it { expect(user).to validate_uniqueness_of(:email).case_insensitive }

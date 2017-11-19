@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 20171119144557) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
-    t.string "username", default: "", null: false
+    t.string "username"
     t.string "first_name", default: "", null: false
     t.string "last_name", default: "", null: false
     t.string "mobile_number", default: "", null: false

@@ -31,7 +31,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.1]
       t.datetime :locked_at
 
       ## Extra Attrs
-      t.string :username, null: false, default: ''
+      t.string :username
       t.string :first_name, null: false, default: ''
       t.string :last_name, null: false, default: ''
       t.string :mobile_number, null: false, default: ''
