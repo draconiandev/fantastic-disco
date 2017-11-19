@@ -16,7 +16,8 @@ class User < ApplicationRecord
   # but every underscore must be separated by at least one number or letter (the rest).
   validates :username, length: { in: 4..40 },
                        format: { with:    /\A(?!_)(?:[a-z0-9]_?)*[a-z](?:_?[a-z0-9])*(?<!_)\z/i,
-                                 message: 'only alphabets, digits and underscores are allowed' }
+                                 message: 'only alphabets, digits and underscores are allowed' }, 
+                       allow_blank: true
 
   validates :first_name, :last_name, format: { with: /\A[a-zA-Z. ]*\z/, message: 'please use only English Alphabets' }
 

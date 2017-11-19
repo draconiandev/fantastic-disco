@@ -16,6 +16,7 @@
 </head>
 
 <body>
+  <%= render 'shared/navbar' %>
   <div class="container">
     <p class="hide">
       <% flash.each do |key, message| %>
@@ -25,7 +26,8 @@
 
     <%= yield %>
 
-    <%#= render 'shared/flash_messages' %>
+    <%= render 'shared/flash_messages' %>
+  </div>
 </body>
 
 </html>
