@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  has_one :permanent_address, class_name: 'Address', dependent: :destroy
-  has_one :current_address, class_name: 'Address', dependent: :destroy
+  has_one :permanent_address, -> { permanent }, class_name: 'Address', dependent: :destroy
+  has_one :current_address, -> { current }, class_name: 'Address', dependent: :destroy
   has_one :user_document, dependent: :destroy
 
   validates :first_name, :last_name, :email, :mobile_number, presence: true
@@ -53,6 +53,10 @@ class User < ApplicationRecord
 
   def docs_uploaded?
     user_document.present?
+  end
+
+  def address_entered?
+    permanent_address.present? && current_address.present?
   end
 
   private

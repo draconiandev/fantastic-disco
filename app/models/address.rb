@@ -5,8 +5,11 @@ class Address < ApplicationRecord
 
   belongs_to :user
 
-  validates :address_line_1, :city, :state, :country, :pincode, :type, presence: true
+  validates :address_line_1, :city, :state, :country, :pincode, :address_type, presence: true
   validate :valid_pincode
+
+  scope :permanent, -> { with_address_type(:permanent) }
+  scope :current, -> { with_address_type(:current) }
 
   # Loads the list of states from a yml file and makes sure that the input is
   # included within the list. Can also be used to scoped queries based on the state.
@@ -14,7 +17,7 @@ class Address < ApplicationRecord
   # as the state.
   # Note: scope: true needs to be added as an attribute to get scoped queries feature
   enumerize :state, in: YAML.load_file(Rails.root.join('config', 'states.yml'))
-  enumerize :type,  in: %i[permanent current]
+  enumerize :address_type,  in: %i[permanent current], scope: true
 
   private
 

@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(version: 20171120133348) do
     t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "type", default: "", null: false
-    t.index ["type"], name: "index_addresses_on_type"
+    t.string "address_type", default: "", null: false
+    t.index ["address_type"], name: "index_addresses_on_address_type"
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 

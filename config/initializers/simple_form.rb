@@ -128,6 +128,9 @@ SimpleForm.setup do |config|
   # Collection of methods to detect if a file type was given.
   # config.file_methods = [ :mounted_as, :file?, :public_filename ]
 
+  # Disable country select from simple form since we are using only India as the default value
+  config.input_mappings = { /country/ => :string }
+
   # Custom mappings for input types. This should be a hash containing a regexp
   # to match as key, and the input type that will be used when the field name
   # matches the regexp as value.

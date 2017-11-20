@@ -19,7 +19,8 @@ class AfterSignupController < ApplicationController
       @otp = Redis.current&.get(current_user.id)
     when :enter_address
       skip_step if current_user.address_entered?
-      @permanent_address = current_user.build_permanent_address
+      @permanent_address = Address.find_or_initialize_by(user: current_user, address_type: 'permanent')
+      @current_address = Address.find_or_initialize_by(user: current_user, address_type: :current)
     when :upload_docs
       skip_step if current_user.docs_uploaded?
       @user_document = UserDocument.find_or_initialize_by(user: current_user)
