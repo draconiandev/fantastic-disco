@@ -20,4 +20,9 @@ module SessionHelpers
     # click_button 'Sign in'
     find(:xpath, "//input[contains(@name, 'commit')]").click
   end
+
+  def user_mobile_verification(otp)
+    fill_in 'user[otp]', with: otp
+    find(:xpath, "//input[contains(@name, 'commit')]").click
+  end
 end
