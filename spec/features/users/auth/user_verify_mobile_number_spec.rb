@@ -9,9 +9,15 @@ describe User do
     expect(page).to have_current_path(after_signup_path(:verify_mobile))
   end
 
+  it 'on successful verification, sees a success toast' do
+    otp = Redis.current.get(described_class.first.id)
+    user_mobile_verification(otp)
+    expect(page).to have_content I18n.t('after_signup.verification_success')
+  end
+
   it 'can verify the mobile number by inputting the proper OTP' do
     otp = Redis.current.get(described_class.first.id)
     user_mobile_verification(otp)
-    expect(page).to have_current_path(after_signup_path(:upload_docs))
+    expect(page).to have_current_path(after_signup_path(:enter_address))
   end
 end
