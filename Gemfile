@@ -52,8 +52,6 @@ group :development, :test do
   gem 'bundler-audit'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'capybara', '~> 2.7'
-  gem 'capybara-webkit', '~> 1.11'
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'pry'
@@ -78,6 +76,8 @@ group :development do
 end
 
 group :test do
+  gem 'capybara', '~> 2.7'
+  gem 'capybara-webkit', '~> 1.11'
   gem 'database_cleaner'
   gem 'shoulda-callback-matchers'
   gem 'shoulda-matchers'

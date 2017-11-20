@@ -25,7 +25,7 @@ describe User, type: :model do
     it { expect(user).to have_db_index(:mobile_number).unique }
     it { expect(user).to have_db_index(:reset_password_token).unique }
     it { expect(user).to have_db_index(:unlock_token).unique }
-    it { expect(user).to have_db_index(:username).unique }
+    it { expect(user).to have_db_index(:username) }
   end
 
   context 'with ActiveRecord Associations' do
