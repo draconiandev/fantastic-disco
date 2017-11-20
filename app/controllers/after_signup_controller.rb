@@ -4,15 +4,21 @@ class AfterSignupController < ApplicationController
   include Wicked::Wizard
   before_action :authenticate_user!
 
+  # Define the steps for the wizard
   steps :verify_mobile, :upload_docs
 
+  # Use a switch statement to determine what to do when a user is on a particular step
+  # :verify_mobile gets the current otp using the safe operator rather than failing
+  # since it doesn't affect our boolean checking
   def show
     case step
     when :verify_mobile
       skip_step if current_user.mobile_verified?
+      # TODO: Remove this once SMS provider has been added
+      @otp = Redis.current&.get(current_user.id)
     when :upload_docs
       skip_step if current_user.docs_uploaded?
-      @user_document = current_user.user_document.new
+      @user_document = UserDocument.find_or_initialize_by(user: current_user)
     end
     render_wizard
   end
@@ -22,8 +28,10 @@ class AfterSignupController < ApplicationController
     when :verify_mobile
       skip_step if current_user.mobile_verified?
       handle_mobile_verification
+    when :upload_docs
+      skip_step if current_user.docs_uploaded?
+      handle_docs_upload
     end
-    render_wizard current_user
   end
 
   private
@@ -32,16 +40,36 @@ class AfterSignupController < ApplicationController
     params.require(:user).permit(:otp)
   end
 
+  # If it is a valid otp, update the user object and clean up the redis db.
+  # Else, redirect the same page with the error message
   def handle_mobile_verification
     if valid_otp?
       current_user.update(mobile_verified: true)
+      Redis.current.del(current_user.id)
+      render_wizard current_user
     else
-      redirect_to after_signup_path(:verify_mobile),
-        error: "Entered OTP was wrong. Please try again!"       
+      flash[:error] = 'Entered OTP was wrong. Please try again!'
+      render after_signup_path(:verify_mobile)
+    end
+    # current_user.update(mobile_verified: true) if valid_otp?
+  end
+
+  # This can be made more secure by checking again here that the user has not changed the mobile number
+  def valid_otp?
+    Redis.current.get(current_user.id) == otp_params[:otp]
+  end
+
+  def handle_docs_upload
+    @user_document = current_user.build_user_document(document_params)
+    if @user_document.save
+      render_wizard current_user
+    else
+      render after_signup_path(:upload_docs),
+        flash: { error: 'There was a problem with uploading your documents. Please try again!' }
     end
   end
 
-  def valid_otp?
-    # Redis.current.get(current_user.id)[:otp] == otp_params[:otp]
+  def document_params
+    params.require(:user_document).permit(:pan_number, :pan, :aadhar_number, :aadhar, :passport_number, :passport)
   end
 end

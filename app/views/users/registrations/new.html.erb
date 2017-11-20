@@ -4,7 +4,9 @@
 
     <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
       <br>
-      <h5><%= f.error_notification %></h5>
+      <h5>
+        <%= f.error_notification %>
+      </h5>
       <br>
       <div class="form-inputs">
         <div class="row">
@@ -12,7 +14,7 @@
             <%= f.input :first_name, required: true, autofocus: true, placeholder: 'Please enter your first name' %>
           </div>
           <div class="col s6">
-            <%= f.input :last_name, required: true, autofocus: true, placeholder: 'Please enter your last name' %>
+            <%= f.input :last_name, required: true,  placeholder: 'Please enter your last name' %>
           </div>
           <div class="col s12">
             <%= f.input :email, required: true, placeholder: 'Please enter a valid email' %>
@@ -21,27 +23,27 @@
             <%= f.input :username, placeholder: 'Please enter a username of your choice. Optional' %>
           </div>
           <div class="col s12">
-            <%= f.input :mobile_number, required: true, placeholder: 'Please enter your mobile number' %>
+            <%= f.input :mobile_number, as: :numeric, required: true, placeholder: 'Please enter your mobile number' %>
           </div>
           <div class="col s12 password-container">
             <%= f.input :password, required: true, placeholder: 'Click the Show button to reveal the password', input_html: { id: 'password' } %>
-            <div class="password-toggle">
-              <input type="checkbox" id="js-showPassword" />
-              <label for="js-showPassword" id="js-showPassword">Show</label>
-            </div>
+              <div class="password-toggle">
+                <input type="checkbox" id="js-showPassword" />
+                <label for="js-showPassword" id="js-showPassword">Show</label>
+              </div>
           </div>
         </div>
       </div>
 
       <div class="form-actions bottom-pad-button">
         <%= f.button :submit, "Sign up" %>
-        <div class="right">
-          <%= link_to "Log in", new_user_session_path, class: 'waves-effect waves-teal btn-flat flat-button' %>
-        </div>
+          <div class="right">
+            <%= link_to "Log in", new_user_session_path, class: 'waves-effect waves-teal btn-flat flat-button' %>
+          </div>
       </div>
-    <% end %>
+      <% end %>
 
-    <%= render "users/shared/links" %>
+        <%= render "users/shared/links" %>
 
   </div>
 </div>

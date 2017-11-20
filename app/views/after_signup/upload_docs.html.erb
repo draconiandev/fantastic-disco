@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col s12 m8 l6 offset-l3 offset-m2">
+    <h4 class="teal-text center">Upload your documents</h4>
+
+    <%= simple_form_for(@user_document, url: wizard_path(:upload_docs), html: { method: :put }) do |f| %>
+      <%= f.error_notification %>
+        <div class="form-inputs">
+          <div class="row">
+            <div class="col s12">
+              <%= f.input :pan_number, placeholder: 'Please enter your PAN Number' %>
+            </div>
+            <div class="col s12">
+              <%= f.input :aadhar_number, placeholder: 'Please enter your Aadhar Number' %>
+            </div>
+            <div class="col s12">
+              <%= f.input :passport_number, placeholder: 'Please enter your Passport Number' %>
+            </div>
+            <br>
+            <div class="col s12">
+              <div class='file-field input-field'>
+                <div class='btn teal'>
+                  <span>*PAN</span>
+                  <%= f.file_field :pan, as: :file, label: '' %>
+                </div>
+                <div class='file-path-wrapper'>
+                  <input class='file-path validate' type='text'>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="col s12">
+              <div class='file-field input-field'>
+                <div class='btn teal'>
+                  <span>*Aadhar</span>
+                  <%= f.file_field :aadhar, as: :file, label: '' %>
+                </div>
+                <div class='file-path-wrapper'>
+                  <input class='file-path validate' type='text'>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="col s12">
+              <div class='file-field input-field'>
+                <div class='btn teal'>
+                  <span>Passport</span>
+                  <%= f.file_field :passport, as: :file, label: '' %>
+                </div>
+                <div class='file-path-wrapper'>
+                  <input class='file-path validate' type='text'>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br>
+
+        <div class="form-actions">
+          <%= f.button :submit, "Submit" %>
+        </div>
+        <% end %>
+  </div>
+</div>

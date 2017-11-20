@@ -6,7 +6,7 @@ class User < ApplicationRecord
   has_one :user_document, dependent: :destroy
 
   validates :first_name, :last_name, :email, :mobile_number, presence: true
-  validates :email, :mobile_number, :username, :account_number, uniqueness: { case_sensitive: false }
+  validates :email, :mobile_number, :account_number, uniqueness: { case_sensitive: false }
   validates :mobile_number, length: { is: 10 },
                             format: { with: /[789]\d{9}/i, message: 'should start with 7, 8, or 9' }
 
@@ -16,7 +16,8 @@ class User < ApplicationRecord
   # but every underscore must be separated by at least one number or letter (the rest).
   validates :username, length: { in: 4..40 },
                        format: { with:    /\A(?!_)(?:[a-z0-9]_?)*[a-z](?:_?[a-z0-9])*(?<!_)\z/i,
-                                 message: 'only alphabets, digits and underscores are allowed' }, 
+                                 message: 'only alphabets, digits and underscores are allowed' },
+                       uniqueness: { case_sensitive: false },
                        allow_blank: true
 
   validates :first_name, :last_name, format: { with: /\A[a-zA-Z. ]*\z/, message: 'please use only English Alphabets' }
@@ -32,6 +33,8 @@ class User < ApplicationRecord
 
   # Before creating the account for the user, generate an account number
   before_create :generate_account_number
+  # After creating the account, generate a OTP and send it to the user
+  after_create :generate_and_send_otp
 
   # Enables the authentication system to login a user using either account number or username
   # The key should be login instead of username or account_number in the params hash
@@ -50,7 +53,7 @@ class User < ApplicationRecord
   end
 
   def docs_uploaded?
-    self.user_document.present?
+    user_document.present?
   end
 
   private
@@ -71,5 +74,11 @@ class User < ApplicationRecord
       token = SecureRandom.hex(3).upcase
       break token unless User.find_by(account_number: token)
     end
+  end
+
+  def generate_and_send_otp
+    otp = Array.new(6) { rand(10) }.join
+    Redis.current.set(id, otp)
+    logger.info "OTP: #{otp}"
   end
 end

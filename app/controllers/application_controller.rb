@@ -17,4 +17,12 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: extra_keys)
     devise_parameter_sanitizer.permit(:account_update, keys: extra_keys)
   end
+
+  def after_sign_up_path_for(_user)
+    after_signup_path(:verify_mobile)
+  end
+
+  def after_sign_in_path_for(_user)
+    after_signup_path(:verify_mobile)
+  end
 end
