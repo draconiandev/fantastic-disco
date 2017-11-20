@@ -14,10 +14,9 @@ class User < ApplicationRecord
   # Does not begin or end with an underscore (the (?!_) and (?<!_) at the beginning and end.
   # May have any number of numbers, letters, or underscores before and after the alphabetic character,
   # but every underscore must be separated by at least one number or letter (the rest).
-  validates :username, length: { in: 4..40 },
+  validates :username, length: { in: 4..40 }, uniqueness: { case_sensitive: false },
                        format: { with:    /\A(?!_)(?:[a-z0-9]_?)*[a-z](?:_?[a-z0-9])*(?<!_)\z/i,
                                  message: 'only alphabets, digits and underscores are allowed' },
-                       uniqueness: { case_sensitive: false },
                        allow_blank: true
 
   validates :first_name, :last_name, format: { with: /\A[a-zA-Z. ]*\z/, message: 'please use only English Alphabets' }
