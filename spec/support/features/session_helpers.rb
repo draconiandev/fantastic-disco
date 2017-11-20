@@ -25,4 +25,12 @@ module SessionHelpers
     fill_in 'user[otp]', with: otp
     find(:xpath, "//input[contains(@name, 'commit')]").click
   end
+
+  def user_enters_address(pincode)
+    fill_in 'address[address_line_1]', with: 'Some long address'
+    fill_in 'address[city]', with: 'Bangalore'
+    select('Karnataka', from: 'address[state]').select_option
+    fill_in 'address[pincode]', with: pincode
+    find(:xpath, "//input[contains(@name, 'commit')]").click
+  end
 end
