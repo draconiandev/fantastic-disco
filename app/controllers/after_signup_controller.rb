@@ -3,6 +3,7 @@
 class AfterSignupController < ApplicationController
   include Wicked::Wizard
   before_action :authenticate_user!
+  skip_before_action :ensure_complete_registration
 
   # Define the steps for the wizard
   steps :verify_mobile, :upload_docs
@@ -36,10 +37,6 @@ class AfterSignupController < ApplicationController
 
   private
 
-  def otp_params
-    params.require(:user).permit(:otp)
-  end
-
   # If it is a valid otp, update the user object and clean up the redis db.
   # Else, redirect the same page with the error message
   def handle_mobile_verification
@@ -59,13 +56,21 @@ class AfterSignupController < ApplicationController
     Redis.current.get(current_user.id) == otp_params[:otp]
   end
 
+  def otp_params
+    params.require(:user).permit(:otp)
+  end
+
+  # This method follows the same logic as handling the mobile verification
+  # Build a user document for user, and save it.
+  # If it saves, render the wizard which takes the user to finish_wizard_path
+  # Else, the same page will be rendered with the errors
   def handle_docs_upload
     @user_document = current_user.build_user_document(document_params)
     if @user_document.save
       render_wizard current_user
     else
-      render after_signup_path(:upload_docs),
-        flash: { error: 'There was a problem with uploading your documents. Please try again!' }
+      flash[:error] = 'There was a problem with uploading your documents. Please try again!'
+      render after_signup_path(:upload_docs)
     end
   end
 
