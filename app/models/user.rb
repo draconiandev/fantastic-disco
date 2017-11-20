@@ -56,7 +56,7 @@ class User < ApplicationRecord
   end
 
   def address_entered?
-    permanent_address.present? && current_address.present?
+    permanent_address.present?
   end
 
   private

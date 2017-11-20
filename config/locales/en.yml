@@ -31,3 +31,10 @@
 
 en:
   hello: "Hello world"
+  after_signup:
+    verification_success: 'Your mobile number has been successfully verified. Please enter your address now!'
+    verification_failure: 'Entered OTP was wrong. Please try again!'
+    address_success: 'Your address has been successfully saved. Please upload your documents'
+    address_failure: 'There was a problem with saving your address. Please try again!'
+    upload_success: 'Your documents have been saved. You can transact with RivalCorp now. Welcome!'
+    upload_failure: 'There was a problem with uploading your documents. Please try again!'

@@ -14,3 +14,8 @@
 //= require jquery/dist/jquery.min
 //= require materialize-css/dist/js/materialize.min
 //= require_tree .
+
+$(document).ready(function() {
+  // Since materializecss overrides browser defaults, include this function
+  $('select').material_select();
+});

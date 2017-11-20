@@ -19,8 +19,7 @@ class AfterSignupController < ApplicationController
       @otp = Redis.current&.get(current_user.id)
     when :enter_address
       skip_step if current_user.address_entered?
-      @permanent_address = Address.find_or_initialize_by(user: current_user, address_type: 'permanent')
-      @current_address = Address.find_or_initialize_by(user: current_user, address_type: :current)
+      @address = Address.find_or_initialize_by(user: current_user, address_type: :permanent)
     when :upload_docs
       skip_step if current_user.docs_uploaded?
       @user_document = UserDocument.find_or_initialize_by(user: current_user)
@@ -33,6 +32,9 @@ class AfterSignupController < ApplicationController
     when :verify_mobile
       skip_step if current_user.mobile_verified?
       handle_mobile_verification
+    when :enter_address
+      skip_step if current_user.address_entered?
+      handle_address_input
     when :upload_docs
       skip_step if current_user.docs_uploaded?
       handle_docs_upload
@@ -47,9 +49,11 @@ class AfterSignupController < ApplicationController
     if valid_otp?
       current_user.update(mobile_verified: true)
       Redis.current.del(current_user.id)
+      # I18n.t 'devise.sessions.signed_in'
+      flash[:success] = I18n.t 'after_signup.verification_success'
       render_wizard current_user
     else
-      flash[:error] = 'Entered OTP was wrong. Please try again!'
+      flash[:error] = I18n.t 'after_signup.verification_failure'
       render after_signup_path(:verify_mobile)
     end
     # current_user.update(mobile_verified: true) if valid_otp?
@@ -64,6 +68,22 @@ class AfterSignupController < ApplicationController
     params.require(:user).permit(:otp)
   end
 
+  def handle_address_input
+    @address = current_user.build_permanent_address(address_params)
+    if @address.save
+      flash[:success] = I18n.t 'after_signup.address_success'
+      render_wizard current_user
+    else
+      flash[:error] = I18n.t 'after_signup.address_failure'
+      render after_signup_path(:enter_address)
+    end
+  end
+
+  def address_params
+    params.require(:address).permit(:address_line_1, :address_line_2, :city, :state, :country, :pincode)
+          .merge(address_type: :permanent)
+  end
+
   # This method follows the same logic as handling the mobile verification
   # Build a user document for user, and save it.
   # If it saves, render the wizard which takes the user to finish_wizard_path
@@ -71,9 +91,10 @@ class AfterSignupController < ApplicationController
   def handle_docs_upload
     @user_document = current_user.build_user_document(document_params)
     if @user_document.save
+      flash[:success] = I18n.t 'after_signup.upload_success'
       render_wizard current_user
     else
-      flash[:error] = 'There was a problem with uploading your documents. Please try again!'
+      flash[:error] = I18n.t 'after_signup.upload_failure'
       render after_signup_path(:upload_docs)
     end
   end

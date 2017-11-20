@@ -48,6 +48,6 @@ class ApplicationController < ActionController::Base
   # Registration is complete when the user has verified the mobile number and uploaded
   # all the required documents
   def completed_registration?
-    current_user.mobile_verified? && current_user.docs_uploaded?
+    current_user.mobile_verified? && current_user.docs_uploaded? && current_user.address_entered?
   end
 end
