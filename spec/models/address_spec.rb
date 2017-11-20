@@ -14,6 +14,7 @@ describe Address, type: :model do
     it { expect(address).to have_db_column(:state).of_type(:string).with_options(null: false, default: '') }
     it { expect(address).to have_db_column(:pincode).of_type(:string).with_options(null: false, default: '') }
     it { expect(address).to have_db_column(:country).of_type(:string).with_options(null: false, default: '') }
+    it { expect(address).to have_db_column(:type).of_type(:string).with_options(null: false, default: '') }
     it { expect(address).to have_db_column(:user_id).of_type(:uuid) }
     it { expect(address).to have_db_index(:user_id) }
   end
@@ -29,10 +30,12 @@ describe Address, type: :model do
     it { expect(address).to validate_presence_of(:state) }
     it { expect(address).to validate_presence_of(:country) }
     it { expect(address).to validate_presence_of(:pincode) }
+    it { expect(address).to validate_presence_of(:type) }
   end
 
   context 'with Enumerize' do
     it { expect(address).to enumerize(:state).in(YAML.load_file(Rails.root.join('config', 'states.yml'))) }
+    it { expect(address).to enumerize(:type).in(%i[permanent current]) }
   end
 
   context 'with private instance methods' do

@@ -8,6 +8,7 @@ FactoryBot.define do
     state { 'Karnataka' }
     pincode { %w[560007 560001 560025 560092 560300].sample }
     country { 'India' }
+    type { :permanent }
     user
   end
 end

@@ -6,7 +6,7 @@ class AfterSignupController < ApplicationController
   before_action :authenticate_user!
 
   # Define the steps for the wizard
-  steps :verify_mobile, :upload_docs
+  steps :verify_mobile, :enter_address, :upload_docs
 
   # Use a switch statement to determine what to do when a user is on a particular step
   # :verify_mobile gets the current otp using the safe operator rather than failing
@@ -17,6 +17,9 @@ class AfterSignupController < ApplicationController
       skip_step if current_user.mobile_verified?
       # TODO: Remove this once SMS provider has been added
       @otp = Redis.current&.get(current_user.id)
+    when :enter_address
+      skip_step if current_user.address_entered?
+      @permanent_address = current_user.build_permanent_address
     when :upload_docs
       skip_step if current_user.docs_uploaded?
       @user_document = UserDocument.find_or_initialize_by(user: current_user)

@@ -5,7 +5,7 @@ class Address < ApplicationRecord
 
   belongs_to :user
 
-  validates :address_line_1, :city, :state, :country, :pincode, presence: true
+  validates :address_line_1, :city, :state, :country, :pincode, :type, presence: true
   validate :valid_pincode
 
   # Loads the list of states from a yml file and makes sure that the input is
@@ -14,6 +14,7 @@ class Address < ApplicationRecord
   # as the state.
   # Note: scope: true needs to be added as an attribute to get scoped queries feature
   enumerize :state, in: YAML.load_file(Rails.root.join('config', 'states.yml'))
+  enumerize :type,  in: %i[permanent current]
 
   private
 
