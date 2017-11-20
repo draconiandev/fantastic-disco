@@ -20,4 +20,14 @@ describe User do
     user_mobile_verification(otp)
     expect(page).to have_current_path(after_signup_path(:enter_address))
   end
+
+  it 'cannot verify by entering wrong OTP' do
+    user_mobile_verification(123_123)
+    expect(page).to have_content I18n.t('after_signup.verification_failure')
+  end
+
+  it 'stays on verification page on entering wrong OTP' do
+    user_mobile_verification(123_123)
+    expect(page).to have_current_path(after_signup_path(:verify_mobile))
+  end
 end
