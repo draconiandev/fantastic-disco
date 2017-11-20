@@ -2,8 +2,8 @@
 
 class AfterSignupController < ApplicationController
   include Wicked::Wizard
-  before_action :authenticate_user!
   skip_before_action :ensure_complete_registration
+  before_action :authenticate_user!
 
   # Define the steps for the wizard
   steps :verify_mobile, :upload_docs

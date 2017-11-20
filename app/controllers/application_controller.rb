@@ -9,8 +9,10 @@ class ApplicationController < ActionController::Base
 
   # Make sure that a user cannot go to any other route unless he/she has completed the registration.
   # But call this before action only if a user is signed in since we don't want this to happen to the
-  # casural visitors of the website or any other scopes that we might add in the future.
-  before_action :ensure_complete_registration, if: :user_signed_in?
+  # casual visitors of the website or any other scopes that we might add in the future.
+  # However, if a user wants to logout or go to update account, we will let the request pass through
+  # the filter chain.
+  before_action :ensure_complete_registration, if: :user_signed_in?, unless: :devise_controller?
 
   # Add a before action to permit extra attributes while signing up or updating the account
   before_action :configure_permitted_parameters, if: :devise_controller?
@@ -33,6 +35,10 @@ class ApplicationController < ActionController::Base
   # Similar to above method
   def after_sign_in_path_for(_user)
     after_signup_path(:verify_mobile)
+  end
+
+  def after_sign_out_path_for(_user)
+    root_path
   end
 
   def ensure_complete_registration
